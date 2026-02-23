@@ -1,0 +1,16 @@
+# frozen_string_literal: true
+
+# Ridgepole schema definition file
+# See: https://github.com/ridgepole/ridgepole
+#
+# テーブルごとのスキーマファイルは db/schemas/ に配置してください。
+# ファイル名はテーブル名に合わせます（例: db/schemas/users.rb）
+#
+# Usage:
+#   bundle exec rake ridgepole:apply    # Apply schema changes
+#   bundle exec rake ridgepole:dry_run  # Show pending changes (dry-run)
+#   bundle exec rake ridgepole:export   # Export current DB schema to db/schemas/
+
+Dir.glob("#{File.dirname(__FILE__)}/schemas/*.rb").sort.each do |f|
+  require f
+end

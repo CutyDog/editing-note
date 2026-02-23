@@ -1,0 +1,6 @@
+ja:
+  auth:
+    errors:
+      invalid_credentials: "メールアドレスまたはパスワードが正しくありません。"
+      unauthenticated: "認証が必要です。ログインし直してください。"
+      session_expired: "セッションの有効期限が切れています。再度ログインしてください。"

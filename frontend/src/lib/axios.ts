@@ -40,7 +40,7 @@ client.interceptors.response.use(
           // 新しいトークンで再試行
           originalRequest.headers.Authorization = `Bearer ${access_token}`;
           return client(originalRequest);
-        } catch (_refreshError) {
+        } catch {
           // リフレッシュ失敗時はログアウト
           localStorage.removeItem('access_token');
           localStorage.removeItem('refresh_token');

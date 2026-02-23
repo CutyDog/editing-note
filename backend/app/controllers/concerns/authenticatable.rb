@@ -4,6 +4,9 @@ module Authenticatable
   extend ActiveSupport::Concern
 
   included do
+    # デフォルトで認証を要求する
+    before_action :authenticate_user!
+
     # 各コントローラーで current_user を参照可能にする
     attr_reader :current_user
   end

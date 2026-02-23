@@ -57,3 +57,53 @@ jobs:
 
       - name: Lint code for consistent style
         run: bin/rubocop -f github
+
+  backend_test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    services:
+      db:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: editing_note_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@09a7688d3b55cf0e976497ff046b70949eeaccfd # v1.288.0
+        with:
+          bundler-cache: true
+          working-directory: backend
+
+      - name: Create database and apply schema
+        env:
+          DB_HOST: localhost
+          DB_USERNAME: postgres
+          DB_PASSWORD: password
+          DB_NAME_TEST: editing_note_test
+          RAILS_ENV: test
+        run: |
+          bin/rails db:create
+          bin/rake ridgepole:apply
+
+      - name: Run RSpec tests
+        env:
+          DB_HOST: localhost
+          DB_USERNAME: postgres
+          DB_PASSWORD: password
+          DB_NAME_TEST: editing_note_test
+          RAILS_ENV: test
+        run: bundle exec rspec

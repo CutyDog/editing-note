@@ -34,6 +34,10 @@ services:
         condition: service_healthy
     environment:
       DATABASE_URL: postgres://postgres:password@db:5432/editing_note_development
+      DB_HOST: db
+      DB_NAME: editing_note_development
+      DB_USERNAME: postgres
+      DB_PASSWORD: password
       RAILS_ENV: development
     stdin_open: true
     tty: true

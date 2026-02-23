@@ -14,11 +14,11 @@ namespace :ridgepole do
     ridgepole("--apply", "--dry-run")
   end
 
-  desc "Export current DB schema to db/schema.rb"
+  desc "Export current DB schema to db/ridgepole_export.rb"
   task export: :environment do
-    output_path = Rails.root.join("db", "schema.rb").to_s
+    output_path = Rails.root.join("db", "ridgepole_export.rb").to_s
     ridgepole("--export", "--output", output_path)
-    puts "Exported: db/schema.rb"
+    puts "Exported: db/ridgepole_export.rb"
   end
 
   private

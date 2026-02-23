@@ -95,6 +95,7 @@ jobs:
           DB_PASSWORD: password
           DB_NAME_TEST: editing_note_test
           RAILS_ENV: test
+          SECRET_KEY_BASE: dummy_secret_key_base_for_test
         run: |
           bin/rails db:create
           bin/rake ridgepole:apply
@@ -106,4 +107,5 @@ jobs:
           DB_PASSWORD: password
           DB_NAME_TEST: editing_note_test
           RAILS_ENV: test
+          SECRET_KEY_BASE: dummy_secret_key_base_for_test
         run: bundle exec rspec

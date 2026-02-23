@@ -11,37 +11,11 @@ namespace :ridgepole do
     ridgepole("--apply", "--dry-run")
   end
 
-  desc "Export current DB schema to db/schemas/ (per-table files)"
+  desc "Export current DB schema to db/schema.rb"
   task export: :environment do
-    require "ridgepole"
-    require "ridgepole/cli/config"
-
-    config = Ridgepole::CLI::Config.new(
-      { config: db_config_path, env: Rails.env }
-    ).to_hash
-
-    conn = Ridgepole::Client.new(config, { })
-
-    # 現在のDBスキーマをDSL文字列として取得
-    dsl = conn.dump
-
-    # テーブルごとに分割して書き出し
-    schemas_dir = Rails.root.join("db", "schemas")
-    FileUtils.mkdir_p(schemas_dir)
-
-    # create_table ブロック単位で分割
-    tables = dsl.scan(/(create_table\s+"(\w+)".*?^end\n?)/m)
-
-    if tables.empty?
-      puts "No tables found to export."
-    else
-      tables.each do |block, table_name|
-        file_path = schemas_dir.join("#{table_name}.rb")
-        File.write(file_path, block)
-        puts "Exported: db/schemas/#{table_name}.rb"
-      end
-      puts "Done! Exported #{tables.size} table(s)."
-    end
+    output_path = Rails.root.join("db", "schema.rb").to_s
+    ridgepole("--export", "--output", output_path)
+    puts "Exported: db/schema.rb"
   end
 
   private

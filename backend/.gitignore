@@ -1,0 +1,14 @@
+tmp
+log
+vendor
+storage
+
+# Security - secret keys and credentials
+config/master.key
+config/credentials/*.key
+
+# Kamal deployment secrets
+.kamal/secrets
+
+# Environment variables
+.env*

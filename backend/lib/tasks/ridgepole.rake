@@ -4,6 +4,9 @@ namespace :ridgepole do
   desc "Apply schema changes from db/Schemafile"
   task apply: :environment do
     ridgepole("--apply")
+    Rake::Task["ridgepole:export"].invoke
+    puts "Running: bundle exec annotaterb models"
+    system("bundle exec annotaterb models")
   end
 
   desc "Show pending schema changes (dry-run)"

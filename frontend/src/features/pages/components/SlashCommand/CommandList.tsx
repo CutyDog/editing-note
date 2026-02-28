@@ -1,4 +1,4 @@
-import { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
+import { forwardRef, useImperativeHandle, useState } from 'react';
 import { type CommandItem } from './commands';
 
 interface CommandListProps {
@@ -8,6 +8,12 @@ interface CommandListProps {
 
 export const CommandList = forwardRef((props: CommandListProps, ref) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [prevItems, setPrevItems] = useState(props.items);
+
+  if (props.items !== prevItems) {
+    setPrevItems(props.items);
+    setSelectedIndex(0);
+  }
 
   const selectItem = (index: number) => {
     const item = props.items[index];
@@ -15,8 +21,6 @@ export const CommandList = forwardRef((props: CommandListProps, ref) => {
       props.command(item);
     }
   };
-
-  useEffect(() => setSelectedIndex(0), [props.items]);
 
   useImperativeHandle(ref, () => ({
     onKeyDown: ({ event }: { event: KeyboardEvent }) => {

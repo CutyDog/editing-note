@@ -1,4 +1,5 @@
 import { type Editor, type Range } from '@tiptap/react';
+import { type ElementType } from 'react';
 import {
   Heading1, Heading2, Heading3,
   List, ListOrdered,
@@ -8,7 +9,7 @@ import {
 export interface CommandItem {
   title: string;
   description: string;
-  icon: any;
+  icon: ElementType;
   command: (props: { editor: Editor; range: Range }) => void;
 }
 

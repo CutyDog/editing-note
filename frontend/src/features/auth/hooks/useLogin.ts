@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 import { login } from '../api';
-import { useAuthStore } from '../stores/authStore';
+import { useAuthStore } from '../../../stores/authStore';
 import { useNavigate } from 'react-router-dom';
 import type { AxiosError } from 'axios';
 
@@ -16,7 +16,6 @@ export const useLogin = () => {
     },
     onError: (error: AxiosError<{ error: string }>) => {
       console.error('Login failed:', error);
-      alert(error.response?.data?.error || 'ログインに失敗しました');
     },
   });
 };

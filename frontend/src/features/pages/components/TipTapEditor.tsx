@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
-import { useEditor, EditorContent, BubbleMenu, type Editor } from '@tiptap/react';
+import { useEditor, EditorContent, type Editor } from '@tiptap/react';
+import { BubbleMenu } from '@tiptap/react/menus';
 import StarterKit from '@tiptap/starter-kit';
 import Placeholder from '@tiptap/extension-placeholder';
 import { Bold, Italic, Strikethrough, Heading1, Heading2, List, ListOrdered } from 'lucide-react';
@@ -20,11 +21,9 @@ export const TipTapEditor: React.FC<TipTapEditorProps> = ({ content, onBlur }) =
         emptyEditorClass: 'is-editor-empty',
       }),
     ],
-    // DBは中身の配列を保持しているので、TipTapにはドキュメント全体として渡す
     content: content && content.length > 0 ? { type: 'doc', content } : '',
     onBlur: ({ editor }: { editor: Editor }) => {
       const json = editor.getJSON();
-      // DB保存用にコンテンツの配列を抽出して渡す
       onBlur((json.content as Record<string, unknown>[]) || []);
     },
     editorProps: {
@@ -46,7 +45,6 @@ export const TipTapEditor: React.FC<TipTapEditorProps> = ({ content, onBlur }) =
     return null;
   }
 
-  // BubbleMenu用のボタンスタイルヘルパー
   const getMenuBtnStyle = (isActive: boolean): React.CSSProperties => ({
     background: isActive ? 'var(--accent-primary)' : 'transparent',
     color: isActive ? '#000' : 'var(--text-primary)',
@@ -57,38 +55,37 @@ export const TipTapEditor: React.FC<TipTapEditorProps> = ({ content, onBlur }) =
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    cursor: 'pointer',
   });
 
   return (
     <div style={{ position: 'relative' }}>
       <BubbleMenu editor={editor} tippyOptions={{ duration: 100 }}>
-        <div className="card" style={{
+        <div style={{
           display: 'flex',
           gap: '4px',
           padding: '4px',
           borderRadius: '8px',
           background: 'var(--glass-bg)',
+          backdropFilter: 'blur(12px)',
           boxShadow: '0 4px 12px rgba(0,0,0,0.5)',
           border: '1px solid var(--border-color)',
         }}>
           <button
             onClick={() => editor.chain().focus().toggleBold().run()}
             style={getMenuBtnStyle(editor.isActive('bold'))}
-            title="Bold"
           >
             <Bold size={16} />
           </button>
           <button
             onClick={() => editor.chain().focus().toggleItalic().run()}
             style={getMenuBtnStyle(editor.isActive('italic'))}
-            title="Italic"
           >
             <Italic size={16} />
           </button>
           <button
             onClick={() => editor.chain().focus().toggleStrike().run()}
             style={getMenuBtnStyle(editor.isActive('strike'))}
-            title="Strikethrough"
           >
             <Strikethrough size={16} />
           </button>
@@ -96,14 +93,12 @@ export const TipTapEditor: React.FC<TipTapEditorProps> = ({ content, onBlur }) =
           <button
             onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
             style={getMenuBtnStyle(editor.isActive('heading', { level: 1 }))}
-            title="Heading 1"
           >
             <Heading1 size={16} />
           </button>
           <button
             onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
             style={getMenuBtnStyle(editor.isActive('heading', { level: 2 }))}
-            title="Heading 2"
           >
             <Heading2 size={16} />
           </button>
@@ -111,14 +106,12 @@ export const TipTapEditor: React.FC<TipTapEditorProps> = ({ content, onBlur }) =
           <button
             onClick={() => editor.chain().focus().toggleBulletList().run()}
             style={getMenuBtnStyle(editor.isActive('bulletList'))}
-            title="Bullet List"
           >
             <List size={16} />
           </button>
           <button
             onClick={() => editor.chain().focus().toggleOrderedList().run()}
             style={getMenuBtnStyle(editor.isActive('orderedList'))}
-            title="Ordered List"
           >
             <ListOrdered size={16} />
           </button>

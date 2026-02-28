@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { useAuthStore } from '../stores/authStore';
 
 const baseURL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
@@ -42,8 +43,7 @@ client.interceptors.response.use(
           return client(originalRequest);
         } catch {
           // リフレッシュ失敗時はログアウト
-          localStorage.removeItem('access_token');
-          localStorage.removeItem('refresh_token');
+          useAuthStore.getState().logout();
           window.location.href = '/login';
         }
       }

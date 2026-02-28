@@ -93,6 +93,21 @@ button:focus-visible {
   min-height: 200px;
   color: var(--text-primary);
   line-height: 1.6;
+  outline: none;
+  caret-color: var(--accent-primary);
+  /* カーソルをアクセントカラーにして視認性を高める */
+}
+
+.prose-editor p {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  min-height: 1em;
+  /* 空行でも高さを持たせる */
+}
+
+.prose-editor ::selection {
+  background-color: rgba(88, 166, 255, 0.3);
+  /* アクセントカラーの半透明 */
 }
 
 .prose-editor p.is-editor-empty:first-child::before {

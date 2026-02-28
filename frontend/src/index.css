@@ -87,3 +87,17 @@ button:focus-visible {
   transform: translateY(-4px);
   border-color: rgba(255, 255, 255, 0.15);
 }
+/* TipTap Editor Styles */
+.prose-editor {
+  min-height: 200px;
+  color: var(--text-primary);
+  line-height: 1.6;
+}
+
+.prose-editor p.is-editor-empty:first-child::before {
+  color: var(--text-secondary);
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}

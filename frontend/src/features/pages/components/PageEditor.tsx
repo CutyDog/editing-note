@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { usePage, useUpdatePage } from '../hooks';
 import { Loader2, Globe, Clock, MoreVertical } from 'lucide-react';
 import type { Page, UpdatePageParams } from '../types';
+import { TipTapEditor } from './TipTapEditor';
 
 interface InternalEditorProps {
   page: Page;
@@ -16,6 +17,10 @@ const InternalEditor: React.FC<InternalEditorProps> = ({ page, updatePage }) => 
     if (title !== page.title) {
       updatePage({ id: page.id, params: { title } });
     }
+  };
+
+  const handleContentBlur = (content: Record<string, unknown>[]) => {
+    updatePage({ id: page.id, params: { content } });
   };
 
   return (
@@ -64,9 +69,8 @@ const InternalEditor: React.FC<InternalEditorProps> = ({ page, updatePage }) => 
           }}
         />
 
-        <div style={{ color: 'var(--text-secondary)', fontSize: '1.1rem', minHeight: '200px' }}>
-          {/* Editor content will go here */}
-          <p>コンテンツの編集機能は現在開発中です...</p>
+        <div style={{ fontSize: '1.1rem', minHeight: '300px' }}>
+          <TipTapEditor content={page.content} onBlur={handleContentBlur} />
         </div>
       </div>
     </div>

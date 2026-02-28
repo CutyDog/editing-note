@@ -68,5 +68,11 @@ RSpec.describe User, type: :model do
       create(:refresh_token, user: user)
       expect { user.destroy }.to change(RefreshToken, :count).by(-1)
     end
+
+    it '削除時に紐づくページも削除されること' do
+      user = create(:user)
+      create(:page, user: user)
+      expect { user.destroy }.to change(Page, :count).by(-1)
+    end
   end
 end

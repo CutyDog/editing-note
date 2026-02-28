@@ -1,5 +1,17 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
+create_table "pages", force: :cascade do |t|
+  t.jsonb "content", default: []
+  t.datetime "created_at", null: false
+  t.bigint "parent_id"
+  t.integer "position", default: 0
+  t.string "title"
+  t.datetime "updated_at", null: false
+  t.bigint "user_id", null: false
+  t.index ["parent_id"], name: "index_pages_on_parent_id"
+  t.index ["user_id"], name: "index_pages_on_user_id"
+end
+
 create_table "profiles", force: :cascade do |t|
   t.datetime "created_at", null: false
   t.string "name", null: false
@@ -28,5 +40,7 @@ create_table "users", force: :cascade do |t|
   t.index ["email"], name: "index_users_on_email", unique: true
 end
 
+add_foreign_key "pages", "pages", column: "parent_id"
+add_foreign_key "pages", "users"
 add_foreign_key "profiles", "users"
 add_foreign_key "refresh_tokens", "users"

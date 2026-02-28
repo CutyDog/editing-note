@@ -12,7 +12,7 @@ export const useLogin = () => {
     mutationFn: ({ email, password }: { email: string; password: string }) => login(email, password),
     onSuccess: (data) => {
       setAuth(data.user, data.access_token, data.refresh_token);
-      navigate('/');
+      navigate('/pages');
     },
     onError: (error: AxiosError<{ error: string }>) => {
       console.error('Login failed:', error);

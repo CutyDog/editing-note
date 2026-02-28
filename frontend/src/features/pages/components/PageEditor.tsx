@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { usePage, useUpdatePage } from '../hooks';
-import { Loader2, Globe, Clock, MoreVertical } from 'lucide-react';
+import { Loader2, Globe, Clock, MoreVertical, FileText } from 'lucide-react';
 import type { Page, UpdatePageParams } from '../types';
 import { TipTapEditor } from './TipTapEditor';
 
@@ -132,8 +132,19 @@ export const PageEditor: React.FC = () => {
 
   if (!id) {
     return (
-      <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-secondary)' }}>
-        ページを選択するか、新しく作成してください。
+      <div style={{
+        flex: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'var(--bg-main)',
+        color: 'var(--text-secondary)'
+      }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.75rem', opacity: 0.5 }}>
+          <FileText size={48} />
+          <p style={{ margin: 0, fontSize: '1rem', fontWeight: 500 }}>Select a page from the sidebar</p>
+        </div>
       </div>
     );
   }

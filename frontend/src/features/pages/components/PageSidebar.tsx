@@ -1,6 +1,6 @@
 import React from 'react';
 import { usePages, useCreatePage, useDeletePage } from '../hooks';
-import { Plus, FileText, Loader2, Trash2 } from 'lucide-react';
+import { Plus, FileText, Loader2, Trash2, Library } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 export const PageSidebar: React.FC = () => {
@@ -43,9 +43,17 @@ export const PageSidebar: React.FC = () => {
       textAlign: 'left'
     }}>
       <div style={{ padding: '0 1rem 1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h2 style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-          Pages
-        </h2>
+        <div
+          onClick={() => navigate('/pages')}
+          className="sidebar-header-link"
+          style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}
+          title="All Pages"
+        >
+          <Library size={18} color="var(--text-secondary)" style={{ transition: 'color 0.2s ease' }} />
+          <h2 style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.05em', margin: 0, transition: 'color 0.2s ease' }}>
+            Pages
+          </h2>
+        </div>
         <button
           onClick={handleCreatePage}
           disabled={isCreating}

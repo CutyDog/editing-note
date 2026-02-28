@@ -12,7 +12,7 @@ export const PublicRoute = ({ children }: PublicRouteProps) => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate('/dashboard');
+      navigate('/pages');
     }
   }, [isAuthenticated, navigate]);
 

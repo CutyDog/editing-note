@@ -51,7 +51,21 @@ module Api
     end
 
     def page_params
-      params.require(:page).permit(:title, :parent_id, :position, content: [])
+      permitted = params.require(:page).permit(:title, :parent_id, :position).to_h
+      if params[:page].key?(:content)
+        content = params[:page][:content]
+        permitted[:content] = safe_parse_content(content)
+      end
+      permitted
+    end
+
+    # `content` パラメータが不正な形式で送信された場合を考慮して、安全にパースする
+    def safe_parse_content(content)
+      if content.is_a?(Array)
+        content.map { |c| c.respond_to?(:to_unsafe_h) ? c.to_unsafe_h : c }
+      else
+        content.respond_to?(:to_unsafe_h) ? content.to_unsafe_h : content
+      end
     end
   end
 end

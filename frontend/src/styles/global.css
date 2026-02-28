@@ -87,3 +87,94 @@ button:focus-visible {
   transform: translateY(-4px);
   border-color: rgba(255, 255, 255, 0.15);
 }
+
+/* TipTap Editor Styles */
+.prose-editor {
+  min-height: 200px;
+  color: var(--text-primary);
+  line-height: 1.6;
+  outline: none;
+  caret-color: var(--accent-primary);
+  /* カーソルをアクセントカラーにして視認性を高める */
+}
+
+.prose-editor p {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  min-height: 1em;
+  /* 空行でも高さを持たせる */
+}
+
+.prose-editor ::selection {
+  background-color: rgba(88, 166, 255, 0.3);
+  /* アクセントカラーの半透明 */
+}
+
+.prose-editor p.is-editor-empty:first-child::before {
+  color: var(--text-secondary);
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+
+.prose-editor h1 {
+  font-size: 2em;
+  font-weight: 700;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  -webkit-text-fill-color: initial;
+  background: none;
+  color: var(--text-primary);
+}
+
+.prose-editor h2 {
+  font-size: 1.5em;
+  font-weight: 600;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  color: var(--text-primary);
+}
+
+.prose-editor h3 {
+  font-size: 1.17em;
+  font-weight: 600;
+  margin-top: 1.25rem;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+}
+
+.prose-editor ul,
+.prose-editor ol {
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.prose-editor ul {
+  list-style-type: disc;
+}
+
+.prose-editor ol {
+  list-style-type: decimal;
+}
+
+.prose-editor blockquote {
+  border-left: 3px solid var(--border-color);
+  margin: 1.5rem 0;
+  padding-left: 1rem;
+  color: var(--text-secondary);
+}
+
+/* Sidebar Specific Styles */
+.group:hover .sidebar-delete-btn {
+  opacity: 1 !important;
+}
+
+.sidebar-delete-btn:hover {
+  background-color: rgba(248, 81, 73, 0.15) !important;
+  color: #f85149 !important;
+}
+
+.sidebar-delete-btn:hover svg {
+  stroke: #f85149 !important;
+}

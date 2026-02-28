@@ -178,3 +178,23 @@ button:focus-visible {
 .sidebar-delete-btn:hover svg {
   stroke: #f85149 !important;
 }
+
+.sidebar-header-link {
+  padding: 6px 10px;
+  margin-left: -10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.sidebar-header-link:hover {
+  background-color: var(--bg-card-hover);
+}
+
+.sidebar-header-link:hover h2 {
+  color: var(--text-primary) !important;
+}
+
+.sidebar-header-link:hover svg {
+  color: var(--accent-primary) !important;
+}

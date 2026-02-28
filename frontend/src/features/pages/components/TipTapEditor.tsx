@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useEditor, EditorContent, type Editor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Placeholder from '@tiptap/extension-placeholder';
 import { EditorBubbleMenu } from './EditorBubbleMenu';
+import { SlashCommand } from './SlashCommand';
 
 interface TipTapEditorProps {
   content: Record<string, unknown>[] | undefined;
@@ -16,9 +17,10 @@ export const TipTapEditor: React.FC<TipTapEditorProps> = ({ content, onBlur }) =
         heading: { levels: [1, 2, 3] },
       }),
       Placeholder.configure({
-        placeholder: 'コンテンツを入力するか «/» を入力してコマンドを呼び出します...',
+        placeholder: '「/」を入力してメニューを呼び出す',
         emptyEditorClass: 'is-editor-empty',
       }),
+      SlashCommand,
     ],
     content: content && content.length > 0 ? { type: 'doc', content } : '',
     onBlur: ({ editor }: { editor: Editor }) => {

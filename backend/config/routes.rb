@@ -9,6 +9,8 @@ Rails.application.routes.draw do
     post "auth/login", to: "auth#login"
     post "auth/refresh", to: "auth#refresh"
     delete "auth/logout", to: "auth#logout"
+
+    resources :pages, only: %i[index show create update destroy]
   end
 
   # Defines the root path route ("/")

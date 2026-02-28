@@ -25,7 +25,16 @@ FactoryBot.define do
   factory :page do
     user
     title { "My Note Page" }
-    content { [{ type: "paragraph", children: [{ text: "Hello Notion!" }] }] }
+    content do
+      [
+        {
+          type: "paragraph",
+          children: [
+            { text: "Hello Notion!" }
+          ]
+        }
+      ]
+    end
     position { 0 }
 
     trait :with_parent do

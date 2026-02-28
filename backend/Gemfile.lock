@@ -75,6 +75,7 @@ GEM
       securerandom (>= 0.3)
       tzinfo (~> 2.0, >= 2.0.5)
       uri (>= 0.13.1)
+    alba (3.10.0)
     annotaterb (4.22.0)
       activerecord (>= 6.0.0)
       activesupport (>= 6.0.0)
@@ -351,6 +352,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  alba
   annotaterb
   bcrypt (~> 3.1.7)
   bootsnap

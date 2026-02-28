@@ -1,0 +1,10 @@
+export interface User {
+  id: number;
+  email: string;
+}
+
+export interface AuthResponse {
+  user: User;
+  access_token: string;
+  refresh_token: string;
+}

@@ -1,0 +1,86 @@
+import React from 'react';
+import { usePages, useCreatePage } from '../hooks';
+import { Plus, FileText, Loader2 } from 'lucide-react';
+import { useNavigate, useParams } from 'react-router-dom';
+
+export const PageSidebar: React.FC = () => {
+  const { data: pages, isLoading } = usePages();
+  const { mutate: createPage, isPending: isCreating } = useCreatePage();
+  const navigate = useNavigate();
+  const { id: activeId } = useParams<{ id: string }>();
+
+  const handleCreatePage = () => {
+    createPage({ title: 'Untitled' }, {
+      onSuccess: (newPage) => {
+        navigate(`/pages/${newPage.id}`);
+      }
+    });
+  };
+
+  return (
+    <div className="page-sidebar" style={{
+      width: '280px',
+      height: '100vh',
+      backgroundColor: 'var(--bg-card)',
+      borderRight: '1px solid var(--border-color)',
+      display: 'flex',
+      flexDirection: 'column',
+      padding: '1rem 0',
+      textAlign: 'left'
+    }}>
+      <div style={{ padding: '0 1rem 1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <h2 style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+          Pages
+        </h2>
+        <button
+          onClick={handleCreatePage}
+          disabled={isCreating}
+          style={{ padding: '4px', borderRadius: '4px', background: 'transparent', boxShadow: 'none' }}
+        >
+          {isCreating ? <Loader2 size={16} className="animate-spin" /> : <Plus size={16} />}
+        </button>
+      </div>
+
+      <div style={{ flex: 1, overflowY: 'auto' }}>
+        {isLoading ? (
+          <div style={{ padding: '1rem', display: 'flex', justifyContent: 'center' }}>
+            <Loader2 size={24} className="animate-spin" color="var(--text-secondary)" />
+          </div>
+        ) : (
+          <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+            {pages?.map((page) => (
+              <li key={page.id}>
+                <button
+                  onClick={() => navigate(`/pages/${page.id}`)}
+                  style={{
+                    width: '100%',
+                    padding: '8px 12px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    background: activeId === String(page.id) ? 'var(--bg-card-hover)' : 'transparent',
+                    border: 'none',
+                    borderRadius: 0,
+                    boxShadow: 'none',
+                    textAlign: 'left'
+                  }}
+                >
+                  <FileText size={16} color={activeId === String(page.id) ? 'var(--accent-primary)' : 'var(--text-secondary)'} />
+                  <span style={{
+                    fontSize: '0.95rem',
+                    color: activeId === String(page.id) ? 'var(--text-primary)' : 'var(--text-secondary)',
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis'
+                  }}>
+                    {page.title || 'Untitled'}
+                  </span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </div>
+  );
+};

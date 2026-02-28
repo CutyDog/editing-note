@@ -19,6 +19,8 @@ globs: frontend/**
         - `index.ts`: 各フック（`usePages.ts` 等）をまとめてエクスポート
         - 各フックごとに1ファイルを原則とする（例: `usePages.ts`, `usePage.ts`）
     - `types/`: その機能専用の型定義
+        - `index.ts`: 各インターフェース（`Page.ts` 等）をまとめてエクスポート
+        - 各インターフェース（または型）ごとに1ファイルを原則とする
     - `index.ts`: 外部（他のfeature）に公開する部品のみをエクスポート（Public API）
 
 共通部品は `src/components/ui/` (shadcn/ui等) に配置してください。

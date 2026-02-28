@@ -6,7 +6,7 @@ if user.pages.empty?
     user.pages.create!(
       title: "Welcome Page #{i}",
       content: [
-        { type: 'paragraph', children: [{ text: "This is seed content for page #{i}." }] }
+        { type: 'paragraph', children: [ { text: "This is seed content for page #{i}." } ] }
       ],
       position: i
     )

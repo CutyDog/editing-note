@@ -1,43 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { usePage, useUpdatePage } from '../hooks';
 import { Loader2, Globe, Clock, MoreVertical } from 'lucide-react';
+import type { Page, UpdatePageParams } from '../types';
 
-export const PageEditor: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
-  const pageId = id ? parseInt(id, 10) : null;
-  const { data: page, isLoading } = usePage(pageId);
-  const { mutate: updatePage } = useUpdatePage();
+interface InternalEditorProps {
+  page: Page;
+  updatePage: (args: { id: number; params: UpdatePageParams }) => void;
+}
 
-  const [title, setTitle] = useState('');
-
-  useEffect(() => {
-    if (page) {
-      setTitle(page.title);
-    }
-  }, [page]);
+const InternalEditor: React.FC<InternalEditorProps> = ({ page, updatePage }) => {
+  const [title, setTitle] = useState(page.title);
 
   const handleTitleBlur = () => {
-    if (page && title !== page.title) {
+    if (title !== page.title) {
       updatePage({ id: page.id, params: { title } });
     }
   };
-
-  if (!id) {
-    return (
-      <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-secondary)' }}>
-        ページを選択するか、新しく作成してください。
-      </div>
-    );
-  }
-
-  if (isLoading) {
-    return (
-      <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <Loader2 size={32} className="animate-spin" color="var(--accent-primary)" />
-      </div>
-    );
-  }
 
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', height: '100vh', backgroundColor: 'var(--bg-main)' }}>
@@ -92,4 +71,31 @@ export const PageEditor: React.FC = () => {
       </div>
     </div>
   );
+};
+
+export const PageEditor: React.FC = () => {
+  const { id } = useParams<{ id: string }>();
+  const pageId = id ? parseInt(id, 10) : null;
+  const { data: page, isLoading } = usePage(pageId);
+  const { mutate: updatePage } = useUpdatePage();
+
+  if (!id) {
+    return (
+      <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-secondary)' }}>
+        ページを選択するか、新しく作成してください。
+      </div>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <Loader2 size={32} className="animate-spin" color="var(--accent-primary)" />
+      </div>
+    );
+  }
+
+  if (!page) return null;
+
+  return <InternalEditor key={page.id} page={page} updatePage={updatePage} />;
 };

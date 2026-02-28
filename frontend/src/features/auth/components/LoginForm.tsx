@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useLogin } from '../hooks/useLogin';
+import { useLogin } from '../hooks';
 import { Mail, Lock, LogIn } from 'lucide-react';
 
 export const LoginForm: React.FC = () => {

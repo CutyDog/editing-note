@@ -1,8 +1,8 @@
 import { useMutation } from '@tanstack/react-query';
-import { login } from '../api/login';
+import { login } from '../api';
 import { useAuthStore } from '../stores/authStore';
 import { useNavigate } from 'react-router-dom';
-import { AxiosError } from 'axios';
+import type { AxiosError } from 'axios';
 
 export const useLogin = () => {
   const setAuth = useAuthStore((state) => state.setAuth);

@@ -11,10 +11,16 @@ globs: frontend/**
 すべての機能は `src/features/` 配下にカプセル化してください。
 
 - `src/features/[feature-name]/`
-    - `api/`: その機能専用のAPI通信 (TanStack Query 等)
+    - `api/`: その機能専用のAPI通信
+        - `index.ts`: 各API関数（`getPages.ts` 等）をまとめてエクスポート
+        - 各アクションごとに1ファイルを原則とする（例: `getPages.ts`, `createPage.ts`）
     - `components/`: その機能専用のUIコンポーネント
     - `hooks/`: その機能専用のカスタムフック
+        - `index.ts`: 各フック（`usePages.ts` 等）をまとめてエクスポート
+        - 各フックごとに1ファイルを原則とする（例: `usePages.ts`, `usePage.ts`）
     - `types/`: その機能専用の型定義
+        - `index.ts`: 各インターフェース（`Page.ts` 等）をまとめてエクスポート
+        - 各インターフェース（または型）ごとに1ファイルを原則とする
     - `index.ts`: 外部（他のfeature）に公開する部品のみをエクスポート（Public API）
 
 共通部品は `src/components/ui/` (shadcn/ui等) に配置してください。
@@ -29,4 +35,10 @@ globs: frontend/**
 - **Hooks:** 独自のロジックは必ずカスタムフックに抽出し、`use` プレフィックスをつけて命名してください。
 - **状態管理:** - サーバー状態は TanStack Query を使用してください。
     - グローバルなクライアント状態は Zustand を優先してください。
-- **型定義:** 可能な限り `interface` または `type` を定義し、Any 型の使用を禁止します。
+- **型定義:** 可能な限り `interface` または `type` を定義し、Any 型の使用を禁止します。また、型のみをインポートする場合は `import type { ... }` を使用してください。
+
+## 4. ルーティング規約
+- **関心事の分離:** ページコンポーネント（`LandingPage` や `DashboardPage` 等）の内部に「ログイン状態に基づく他画面へのリダイレクトロジック（`<Navigate />`の返却やフック内での画面遷移）」を記述しないでください。
+- **制御ロジックレイヤーへの集約:** アクセス制御は `src/App.tsx` の Router 定義内で、専用のラッパーコンポーネント（例: `ProtectedRoute`, `PublicRoute`）を使って一元管理します。
+  - `ProtectedRoute`: ログイン済みでのみアクセス可能な画面をラップする。
+  - `PublicRoute`: 未ログインでのみアクセス可能な画面（ログイン済みの場合はダッシュボード等に飛ばす画面）をラップする。

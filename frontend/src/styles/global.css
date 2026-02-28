@@ -164,3 +164,17 @@ button:focus-visible {
   padding-left: 1rem;
   color: var(--text-secondary);
 }
+
+/* Sidebar Specific Styles */
+.group:hover .sidebar-delete-btn {
+  opacity: 1 !important;
+}
+
+.sidebar-delete-btn:hover {
+  background-color: rgba(248, 81, 73, 0.15) !important;
+  color: #f85149 !important;
+}
+
+.sidebar-delete-btn:hover svg {
+  stroke: #f85149 !important;
+}

@@ -8,9 +8,10 @@ import { SlashCommand } from './SlashCommand';
 interface TipTapEditorProps {
   content: Record<string, unknown>[] | undefined;
   onBlur: (content: Record<string, unknown>[]) => void;
+  onChange?: (content: Record<string, unknown>[]) => void;
 }
 
-export const TipTapEditor: React.FC<TipTapEditorProps> = ({ content, onBlur }) => {
+export const TipTapEditor: React.FC<TipTapEditorProps> = ({ content, onBlur, onChange }) => {
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -23,6 +24,12 @@ export const TipTapEditor: React.FC<TipTapEditorProps> = ({ content, onBlur }) =
       SlashCommand,
     ],
     content: content && content.length > 0 ? { type: 'doc', content } : '',
+    onUpdate: ({ editor }: { editor: Editor }) => {
+      const json = editor.getJSON();
+      if (onChange) {
+        onChange((json.content as Record<string, unknown>[]) || []);
+      }
+    },
     onBlur: ({ editor }: { editor: Editor }) => {
       const json = editor.getJSON();
       onBlur((json.content as Record<string, unknown>[]) || []);

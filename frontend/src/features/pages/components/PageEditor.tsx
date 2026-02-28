@@ -10,8 +10,40 @@ interface InternalEditorProps {
   updatePage: (args: { id: number; params: UpdatePageParams }) => void;
 }
 
+const getRelativeTimeString = (date: Date): string => {
+  const now = new Date();
+  const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
+
+  if (diffInSeconds < 60) return 'just now';
+  const diffInMinutes = Math.floor(diffInSeconds / 60);
+  if (diffInMinutes < 60) return `${diffInMinutes}m ago`;
+  const diffInHours = Math.floor(diffInMinutes / 60);
+  if (diffInHours < 24) return `${diffInHours}h ago`;
+  return date.toLocaleDateString();
+};
+
 const InternalEditor: React.FC<InternalEditorProps> = ({ page, updatePage }) => {
   const [title, setTitle] = useState(page.title);
+  const [isSaving, setIsSaving] = useState(false);
+  const saveTimeoutRef = React.useRef<number | null>(null);
+
+  const debounceUpdate = (params: UpdatePageParams) => {
+    setIsSaving(true);
+    if (saveTimeoutRef.current) {
+      clearTimeout(saveTimeoutRef.current);
+    }
+    saveTimeoutRef.current = window.setTimeout(() => {
+      updatePage({ id: page.id, params });
+      saveTimeoutRef.current = null;
+      setIsSaving(false);
+    }, 1000);
+  };
+
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newTitle = e.target.value;
+    setTitle(newTitle);
+    debounceUpdate({ title: newTitle });
+  };
 
   const handleTitleBlur = () => {
     if (title !== page.title) {
@@ -22,6 +54,19 @@ const InternalEditor: React.FC<InternalEditorProps> = ({ page, updatePage }) => 
   const handleContentBlur = (content: Record<string, unknown>[]) => {
     updatePage({ id: page.id, params: { content } });
   };
+
+  const handleContentChange = (content: Record<string, unknown>[]) => {
+    debounceUpdate({ content });
+  };
+
+  // Cleanup timeout on unmount
+  React.useEffect(() => {
+    return () => {
+      if (saveTimeoutRef.current) {
+        clearTimeout(saveTimeoutRef.current);
+      }
+    };
+  }, []);
 
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', height: '100vh', backgroundColor: 'var(--bg-main)' }}>
@@ -41,7 +86,9 @@ const InternalEditor: React.FC<InternalEditorProps> = ({ page, updatePage }) => 
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
             <Clock size={14} />
-            <span>Edited 2 mins ago</span>
+            <span style={{ minWidth: '80px' }}>
+              {isSaving ? 'Saving...' : `Edited ${getRelativeTimeString(new Date(page.updated_at))}`}
+            </span>
           </div>
         </div>
         <button style={{ background: 'transparent', border: 'none', boxShadow: 'none', padding: '4px' }}>
@@ -54,7 +101,7 @@ const InternalEditor: React.FC<InternalEditorProps> = ({ page, updatePage }) => 
         <input
           type="text"
           value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          onChange={handleTitleChange}
           onBlur={handleTitleBlur}
           placeholder="Untitled"
           style={{
@@ -70,7 +117,7 @@ const InternalEditor: React.FC<InternalEditorProps> = ({ page, updatePage }) => 
         />
 
         <div style={{ fontSize: '1.1rem', minHeight: '300px' }}>
-          <TipTapEditor content={page.content} onBlur={handleContentBlur} />
+          <TipTapEditor content={page.content} onBlur={handleContentBlur} onChange={handleContentChange} />
         </div>
       </div>
     </div>

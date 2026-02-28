@@ -1,11 +1,12 @@
 import React from 'react';
-import { usePages, useCreatePage } from '../hooks';
-import { Plus, FileText, Loader2 } from 'lucide-react';
+import { usePages, useCreatePage, useDeletePage } from '../hooks';
+import { Plus, FileText, Loader2, Trash2 } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 export const PageSidebar: React.FC = () => {
   const { data: pages, isLoading } = usePages();
   const { mutate: createPage, isPending: isCreating } = useCreatePage();
+  const { mutate: deletePage } = useDeletePage();
   const navigate = useNavigate();
   const { id: activeId } = useParams<{ id: string }>();
 
@@ -15,6 +16,19 @@ export const PageSidebar: React.FC = () => {
         navigate(`/pages/${newPage.id}`);
       }
     });
+  };
+
+  const handleDeletePage = (e: React.MouseEvent, id: number) => {
+    e.stopPropagation();
+    if (confirm('このページを削除してもよろしいですか？')) {
+      deletePage(id, {
+        onSuccess: () => {
+          if (activeId === String(id)) {
+            navigate('/pages');
+          }
+        }
+      });
+    }
   };
 
   return (
@@ -49,33 +63,55 @@ export const PageSidebar: React.FC = () => {
         ) : (
           <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
             {pages?.map((page) => (
-              <li key={page.id}>
-                <button
-                  onClick={() => navigate(`/pages/${page.id}`)}
-                  style={{
-                    width: '100%',
-                    padding: '8px 12px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '8px',
-                    background: activeId === String(page.id) ? 'var(--bg-card-hover)' : 'transparent',
-                    border: 'none',
-                    borderRadius: 0,
-                    boxShadow: 'none',
-                    textAlign: 'left'
-                  }}
-                >
-                  <FileText size={16} color={activeId === String(page.id) ? 'var(--accent-primary)' : 'var(--text-secondary)'} />
-                  <span style={{
-                    fontSize: '0.95rem',
-                    color: activeId === String(page.id) ? 'var(--text-primary)' : 'var(--text-secondary)',
-                    whiteSpace: 'nowrap',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis'
-                  }}>
-                    {page.title || 'Untitled'}
-                  </span>
-                </button>
+              <li key={page.id} className="group">
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  paddingRight: '8px',
+                  background: activeId === String(page.id) ? 'var(--bg-card-hover)' : 'transparent',
+                }}>
+                  <button
+                    onClick={() => navigate(`/pages/${page.id}`)}
+                    style={{
+                      flex: 1,
+                      padding: '8px 12px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      background: 'transparent',
+                      border: 'none',
+                      borderRadius: 0,
+                      boxShadow: 'none',
+                      textAlign: 'left',
+                      overflow: 'hidden'
+                    }}
+                  >
+                    <FileText size={16} color={activeId === String(page.id) ? 'var(--accent-primary)' : 'var(--text-secondary)'} />
+                    <span style={{
+                      fontSize: '0.95rem',
+                      color: activeId === String(page.id) ? 'var(--text-primary)' : 'var(--text-secondary)',
+                      whiteSpace: 'nowrap',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis'
+                    }}>
+                      {page.title || 'Untitled'}
+                    </span>
+                  </button>
+                  <button
+                    onClick={(e) => handleDeletePage(e, page.id)}
+                    className="sidebar-delete-btn"
+                    style={{
+                      padding: '4px',
+                      borderRadius: '4px',
+                      background: 'transparent',
+                      boxShadow: 'none',
+                      opacity: 0,
+                      transition: 'opacity 0.2s',
+                    }}
+                  >
+                    <Trash2 size={14} color="var(--text-secondary)" />
+                  </button>
+                </div>
               </li>
             ))}
           </ul>

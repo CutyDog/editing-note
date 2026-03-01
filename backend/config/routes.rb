@@ -10,6 +10,7 @@ Rails.application.routes.draw do
     post "auth/refresh", to: "auth#refresh"
     delete "auth/logout", to: "auth#logout"
 
+    resource :me, only: %i[show update], controller: "me"
     resources :pages, only: %i[index show create update destroy]
   end
 

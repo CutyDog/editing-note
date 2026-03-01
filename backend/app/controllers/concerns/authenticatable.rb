@@ -1,19 +1,23 @@
 # frozen_string_literal: true
+# rbs_inline: enabled
 
 module Authenticatable
   extend ActiveSupport::Concern
 
+  # steep:ignore:start
   included do
     # デフォルトで認証を要求する
     before_action :authenticate_user!
 
     # 各コントローラーで current_user を参照可能にする
-    attr_reader :current_user
+    attr_reader :current_user #: User
   end
+  # steep:ignore:end
 
   private
 
   # 認証が必要なアクションの before_action として使用
+  #: () -> void
   def authenticate_user!
     token = request.headers["Authorization"]&.split(" ")&.last
     payload = JwtToken.decode(token) if token

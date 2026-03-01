@@ -1,10 +1,9 @@
 # frozen_string_literal: true
+# rbs_inline: enabled
 
 module Pages
   # ページ一覧・children で使う軽量表現
-  class SummarySerializer
-    include Alba::Resource
-
+  class SummarySerializer < ::BaseSerializer
     attributes :id, :title, :position, :parent_id, :created_at, :updated_at
   end
 end

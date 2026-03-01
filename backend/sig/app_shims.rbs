@@ -1,0 +1,11 @@
+class BaseSerializer
+  extend Alba::Resource::ClassMethods
+  include Alba::Resource
+end
+
+module Authenticatable
+  def self.included: (untyped base) -> void
+  def before_action: (Symbol) -> void
+  def request: () -> untyped
+  def render: (?json: untyped, ?status: Symbol) -> void
+end

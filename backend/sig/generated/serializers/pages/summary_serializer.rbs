@@ -1,0 +1,7 @@
+# Generated from app/serializers/pages/summary_serializer.rb with RBS::Inline
+
+module Pages
+  # ページ一覧・children で使う軽量表現
+  class SummarySerializer < ::BaseSerializer
+  end
+end

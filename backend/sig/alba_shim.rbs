@@ -1,0 +1,12 @@
+module Alba
+  module Resource
+    module ClassMethods
+      def attributes: (*Symbol) -> void
+      def one: (Symbol, ?resource: untyped, ?key: Symbol) -> void
+      def many: (Symbol, ?serializer: untyped) { () -> void } -> void
+      def new: (untyped) -> untyped
+    end
+
+    def to_h: () -> Hash[Symbol, untyped]
+  end
+end

@@ -1,0 +1,23 @@
+# Generated from app/models/profile/dummy.rb with RBS::Inline
+
+class Profile
+  class Dummy
+    # : (User user) -> void
+    def initialize: (User user) -> void
+
+    # : () -> Integer
+    def id: () -> Integer
+
+    # : () -> Integer
+    def user_id: () -> Integer
+
+    # : () -> String
+    def name: () -> String
+
+    # : () -> ActiveSupport::TimeWithZone
+    def created_at: () -> ActiveSupport::TimeWithZone
+
+    # : () -> ActiveSupport::TimeWithZone
+    def updated_at: () -> ActiveSupport::TimeWithZone
+  end
+end

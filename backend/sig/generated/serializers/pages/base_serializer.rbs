@@ -1,0 +1,7 @@
+# Generated from app/serializers/pages/base_serializer.rb with RBS::Inline
+
+module Pages
+  # 作成・更新レスポンス用
+  class BaseSerializer < ::BaseSerializer
+  end
+end

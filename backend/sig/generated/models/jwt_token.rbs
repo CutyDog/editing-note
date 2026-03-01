@@ -1,0 +1,17 @@
+# Generated from app/models/jwt_token.rb with RBS::Inline
+
+class JwtToken
+  # ペイロードをエンコードしてJWTを発行
+  # @param payload [Hash] ユーザーIDなどを含める
+  # @param exp [ActiveSupport::Duration, Time] 有効期限 (デフォルト 15分)
+  def self.encode: (untyped payload, ?untyped exp) -> untyped
+
+  # JWTをデコードしてペイロードを取得
+  # @param token [String] JWT文字列
+  # @return [HashWithIndifferentAccess, nil] デコード成功時はペイロード、失敗時はnil
+  def self.decode: (untyped token) -> untyped
+
+  private
+
+  def self.secret_key: () -> untyped
+end

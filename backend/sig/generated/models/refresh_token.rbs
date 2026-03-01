@@ -1,0 +1,36 @@
+# Generated from app/models/refresh_token.rb with RBS::Inline
+
+# == Schema Information
+#
+# Table name: refresh_tokens
+#
+#  id         :bigint           not null, primary key
+#  expires_at :datetime         not null
+#  revoked_at :datetime
+#  token      :string           not null
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  user_id    :bigint           not null
+#
+# Indexes
+#
+#  index_refresh_tokens_on_token                   (token) UNIQUE
+#  index_refresh_tokens_on_user_id                 (user_id)
+#  index_refresh_tokens_on_user_id_and_revoked_at  (user_id,revoked_at)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (user_id => users.id)
+class RefreshToken < ApplicationRecord
+  def revoke!: () -> untyped
+
+  def revoked?: () -> untyped
+
+  def expired?: () -> untyped
+
+  def usable?: () -> untyped
+
+  private
+
+  def set_token_and_expiry: () -> untyped
+end

@@ -1,0 +1,29 @@
+# Generated from app/controllers/api/pages_controller.rb with RBS::Inline
+
+module Api
+  class PagesController < ApplicationController
+    # GET /api/pages
+    def index: () -> untyped
+
+    # GET /api/pages/:id
+    def show: () -> untyped
+
+    # POST /api/pages
+    def create: () -> untyped
+
+    # PATCH /api/pages/:id
+    def update: () -> untyped
+
+    # DELETE /api/pages/:id
+    def destroy: () -> untyped
+
+    private
+
+    def set_page: () -> untyped
+
+    def page_params: () -> untyped
+
+    # `content` パラメータが不正な形式で送信された場合を考慮して、安全にパースする
+    def safe_parse_content: (untyped content) -> untyped
+  end
+end

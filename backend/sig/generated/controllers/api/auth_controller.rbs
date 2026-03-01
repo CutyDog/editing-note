@@ -1,0 +1,15 @@
+# Generated from app/controllers/api/auth_controller.rb with RBS::Inline
+
+module Api
+  class AuthController < ApplicationController
+    # POST /api/auth/login
+    def login: () -> untyped
+
+    # POST /api/auth/refresh
+    # アクセストークンの期限が切れた際、リフレッシュトークンを使って再発行する
+    def refresh: () -> untyped
+
+    # DELETE /api/auth/logout
+    def logout: () -> untyped
+  end
+end

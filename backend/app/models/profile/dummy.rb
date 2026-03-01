@@ -1,27 +1,37 @@
 # frozen_string_literal: true
+# rbs_inline: enabled
 
 class Profile
   class Dummy
-    include ActiveModel::Model
-    include ActiveModel::Attributes
-
-    attribute :id, :integer
-    attribute :user_id, :integer
-    attribute :name, :string
-    attribute :created_at, :datetime
-    attribute :updated_at, :datetime
-
+    #: (User user) -> void
     def initialize(user)
-      super()
-
       @user = user
-      timestamp = Time.current.freeze
+      @timestamp = Time.current.freeze
+    end
 
-      self.id = 0
-      self.user_id = user.id
-      self.name = "No Name"
-      self.created_at = timestamp
-      self.updated_at = timestamp
+    #: () -> Integer
+    def id
+      0
+    end
+
+    #: () -> Integer
+    def user_id
+      @user.id
+    end
+
+    #: () -> String
+    def name
+      "No Name"
+    end
+
+    #: () -> ActiveSupport::TimeWithZone
+    def created_at
+      @timestamp
+    end
+
+    #: () -> ActiveSupport::TimeWithZone
+    def updated_at
+      @timestamp
     end
   end
 end

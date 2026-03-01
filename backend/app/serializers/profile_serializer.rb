@@ -1,7 +1,6 @@
 # frozen_string_literal: true
+# rbs_inline: enabled
 
-class ProfileSerializer
-  include Alba::Resource
-
+class ProfileSerializer < ::BaseSerializer
   attributes :name, :created_at, :updated_at
 end

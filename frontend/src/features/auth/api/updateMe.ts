@@ -13,6 +13,6 @@ export interface UpdateMeParams {
 }
 
 export const updateMe = async (params: UpdateMeParams): Promise<User> => {
-  const { data } = await axios.patch('/me', params);
+  const { data } = await axios.patch('/api/me', params);
   return data;
 };

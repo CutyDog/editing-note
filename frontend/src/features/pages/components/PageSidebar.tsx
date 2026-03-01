@@ -1,8 +1,9 @@
 import React from 'react';
 import { usePages, useCreatePage, useDeletePage } from '../hooks';
-import { Plus, Loader2, Library } from 'lucide-react';
+import { Plus, Loader2, Library, User as UserIcon } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { PageTreeItem } from './PageTreeItem';
+import { useMe, ProfileModal } from '../../auth';
 
 export const PageSidebar: React.FC = () => {
   const { data: pages, isLoading } = usePages();
@@ -10,6 +11,8 @@ export const PageSidebar: React.FC = () => {
   const { mutate: deletePage } = useDeletePage();
   const navigate = useNavigate();
   const { id: activeId } = useParams<{ id: string }>();
+  const { data: me } = useMe();
+  const [isProfileModalOpen, setIsProfileModalOpen] = React.useState(false);
 
   const handleCreatePage = () => {
     createPage({ title: 'Untitled' }, {
@@ -51,9 +54,36 @@ export const PageSidebar: React.FC = () => {
       borderRight: '1px solid var(--border-color)',
       display: 'flex',
       flexDirection: 'column',
-      padding: '1rem 0',
       textAlign: 'left'
     }}>
+      {/* User settings section */}
+      <div
+        className="sidebar-header-link"
+        onClick={() => setIsProfileModalOpen(true)}
+        style={{ padding: '1rem', display: 'flex', alignItems: 'center', gap: '0.75rem', borderBottom: '1px solid var(--border-color)', marginBottom: '1rem' }}
+      >
+        <div style={{
+          width: '32px',
+          height: '32px',
+          borderRadius: '50%',
+          background: 'rgba(88, 166, 255, 0.1)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexShrink: 0
+        }}>
+          <UserIcon size={18} color="var(--accent-primary)" />
+        </div>
+        <div style={{ flex: 1, overflow: 'hidden' }}>
+          <div style={{ fontSize: '0.9rem', fontWeight: 600, color: 'var(--text-primary)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+            {me?.profile?.name || 'Loading...'}
+          </div>
+          <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+            {me?.email}
+          </div>
+        </div>
+      </div>
+
       <div style={{ padding: '0 1rem 1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div
           onClick={() => navigate('/pages')}
@@ -97,6 +127,8 @@ export const PageSidebar: React.FC = () => {
           </ul>
         )}
       </div>
+
+      <ProfileModal isOpen={isProfileModalOpen} onClose={() => setIsProfileModalOpen(false)} />
     </div>
   );
 };

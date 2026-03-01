@@ -26,4 +26,8 @@ class User < ApplicationRecord
                     format: { with: URI::MailTo::EMAIL_REGEXP }
 
   normalizes :email, with: ->(email) { email.strip.downcase }
+
+  def profile_or_dummy
+    profile || Profile::Dummy.new(self)
+  end
 end

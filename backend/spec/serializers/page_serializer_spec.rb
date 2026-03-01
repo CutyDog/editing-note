@@ -5,17 +5,18 @@ RSpec.describe Pages::SummarySerializer do
   let(:page) { create(:page, user: user, title: 'テストページ', position: 1) }
   let(:result) { described_class.new(page).to_h }
 
-  it 'id, title, position, created_at, updated_at を返すこと' do
+  it 'id, title, position, parent_id, created_at, updated_at を返すこと' do
     expect(result).to match(a_hash_including(
       "id" => page.id,
       "title" => 'テストページ',
-      "position" => 1
+      "position" => 1,
+      "parent_id" => nil
     ))
     expect(result).to include("created_at", "updated_at")
   end
 
-  it 'content や parent_id を含まないこと' do
-    expect(result).not_to include("content", "parent_id")
+  it 'content を含まないこと' do
+    expect(result).not_to include("content")
   end
 end
 
@@ -59,6 +60,6 @@ RSpec.describe Pages::DetailSerializer do
   end
 
   it '子ページはSummary形式（contentを含まない）であること' do
-    expect(result["children"].first).not_to include("content", "parent_id")
+    expect(result["children"].first).not_to include("content")
   end
 end

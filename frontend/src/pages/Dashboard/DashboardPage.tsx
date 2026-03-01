@@ -1,6 +1,5 @@
 import React from 'react';
-import { PageSidebar } from '../../features/pages/components/PageSidebar';
-import { PageEditor } from '../../features/pages/components/PageEditor';
+import { PageSidebar, PageEditor } from '../../features/pages';
 
 const DashboardPage: React.FC = () => {
   return (

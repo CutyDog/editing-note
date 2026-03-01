@@ -7,7 +7,7 @@ module Api
     # GET /api/pages
     def index
       pages = if params[:q].present?
-                PageSearchService.new(current_user).search(params[:q])
+                ::PageSearchService.new(current_user).search(params[:q])
       else
                 # フロントエンドでツリー構造を構築するため、全ページを返す
                 current_user.pages.order(:position, :created_at)

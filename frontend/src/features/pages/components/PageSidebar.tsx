@@ -1,6 +1,6 @@
-import React from 'react';
-import { usePages, useCreatePage, useDeletePage } from '../hooks';
-import { Plus, Loader2, Library, User as UserIcon } from 'lucide-react';
+import React, { useState } from 'react';
+import { usePages, useCreatePage, useDeletePage, useSearchPages } from '../hooks';
+import { Plus, Loader2, Library, User as UserIcon, Search } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { PageTreeItem } from './PageTreeItem';
 import { useMe, ProfileModal } from '../../auth';
@@ -13,6 +13,8 @@ export const PageSidebar: React.FC = () => {
   const { id: activeId } = useParams<{ id: string }>();
   const { data: me } = useMe();
   const [isProfileModalOpen, setIsProfileModalOpen] = React.useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const { data: searchResults, isLoading: isSearching } = useSearchPages(searchQuery);
 
   const handleCreatePage = () => {
     createPage({ title: 'Untitled' }, {
@@ -99,14 +101,76 @@ export const PageSidebar: React.FC = () => {
         <button
           onClick={handleCreatePage}
           disabled={isCreating}
-          style={{ padding: '4px', borderRadius: '4px', background: 'transparent', boxShadow: 'none', outline: 'none' }}
+          style={{ padding: '4px', borderRadius: '4px', background: 'transparent', border: 'none', boxShadow: 'none', cursor: 'pointer' }}
         >
-          {isCreating ? <Loader2 size={16} className="animate-spin" /> : <Plus size={16} />}
+          {isCreating ? <Loader2 size={16} className="animate-spin" color="var(--text-secondary)" /> : <Plus size={16} color="var(--text-secondary)" />}
         </button>
       </div>
 
+      <div style={{ padding: '0 1rem 1rem' }}>
+        <div style={{ position: 'relative' }}>
+          <Search size={14} color="var(--text-secondary)" style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)' }} />
+          <input
+            type="text"
+            placeholder="Search pages..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            style={{
+              width: '100%',
+              padding: '6px 12px 6px 32px',
+              borderRadius: '6px',
+              border: '1px solid var(--border-color)',
+              background: 'rgba(255, 255, 255, 0.03)',
+              color: 'var(--text-primary)',
+              fontSize: '0.85rem'
+            }}
+          />
+        </div>
+      </div>
+
       <div style={{ flex: 1, overflowY: 'auto' }}>
-        {isLoading ? (
+        {searchQuery ? (
+          <div style={{ padding: '0 1rem' }}>
+            {isSearching ? (
+              <div style={{ display: 'flex', justifyContent: 'center', padding: '1rem' }}>
+                <Loader2 size={16} className="animate-spin" color="var(--text-secondary)" />
+              </div>
+            ) : searchResults?.length === 0 ? (
+              <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', textAlign: 'center', padding: '1rem' }}>
+                No results found
+              </div>
+            ) : (
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                {searchResults?.map((page) => (
+                  <li key={page.id} style={{ marginBottom: '4px' }}>
+                    <button
+                      onClick={() => {
+                        navigate(`/pages/${page.id}`);
+                      }}
+                      style={{
+                        width: '100%',
+                        textAlign: 'left',
+                        padding: '6px 8px',
+                        background: activeId === String(page.id) ? 'rgba(88, 166, 255, 0.1)' : 'transparent',
+                        border: 'none',
+                        borderRadius: '4px',
+                        color: activeId === String(page.id) ? 'var(--accent-primary)' : 'var(--text-primary)',
+                        fontSize: '0.9rem',
+                        cursor: 'pointer',
+                        whiteSpace: 'nowrap',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        display: 'block'
+                      }}
+                    >
+                      {page.title || 'Untitled'}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        ) : isLoading ? (
           <div style={{ padding: '1rem', display: 'flex', justifyContent: 'center' }}>
             <Loader2 size={24} className="animate-spin" color="var(--text-secondary)" />
           </div>

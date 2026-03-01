@@ -1,0 +1,4 @@
+# Generated from app/serializers/profile_serializer.rb with RBS::Inline
+
+class ProfileSerializer < ::BaseSerializer
+end

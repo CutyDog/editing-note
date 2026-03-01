@@ -65,4 +65,15 @@ group :development, :test do
 
   # Annotate models with schema information [https://github.com/drwl/annotaterb]
   gem "annotaterb"
+
+  # RBS for type checking [https://github.com/ruby/rbs]
+  gem "rbs"
+
+  gem "rbs_rails", require: false
+
+  # Inline RBS for type checking [https://github.com/ruby/rbs-inline]
+  gem "rbs-inline", require: false
+
+  # Steep for type checking [https://github.com/soutaro/steep]
+  gem "steep"
 end

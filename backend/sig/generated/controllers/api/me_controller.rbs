@@ -1,0 +1,15 @@
+# Generated from app/controllers/api/me_controller.rb with RBS::Inline
+
+module Api
+  class MeController < ApplicationController
+    def show: () -> untyped
+
+    def update: () -> untyped
+
+    private
+
+    def user_params: () -> untyped
+
+    def profile_params: () -> untyped
+  end
+end

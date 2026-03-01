@@ -18,6 +18,20 @@ RSpec.describe 'Api::Pages', type: :request do
         expect(response).to have_http_status(:ok)
         expect(json.length).to eq(3)
       end
+
+      context 'qパラメータが指定された場合' do
+        before do
+          user.pages.first.update!(title: 'React Navigation')
+          user.pages.second.update!(title: 'Vue Notes')
+        end
+
+        it '検索クエリにマッチするページのみを返すこと' do
+          get '/api/pages?q=react', headers: auth_headers(user), as: :json
+          expect(response).to have_http_status(:ok)
+          expect(json.length).to eq(1)
+          expect(json.first['title']).to eq('React Navigation')
+        end
+      end
     end
 
     context '未認証の場合' do

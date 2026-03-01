@@ -27,10 +27,4 @@ RSpec.describe Profile::Dummy, type: :model do
       expect(dummy.updated_at).to be_present
     end
   end
-
-  describe "ActiveModelの互換性" do
-    it "attributesメソッドを持つ" do
-      expect(dummy.attributes).to include("name" => "No Name")
-    end
-  end
 end

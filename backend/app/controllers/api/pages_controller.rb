@@ -6,8 +6,12 @@ module Api
 
     # GET /api/pages
     def index
-      # フロントエンドでツリー構造を構築するため、全ページを返す
-      pages = current_user.pages.order(:position, :created_at)
+      pages = if params[:q].present?
+                PageSearchService.new(current_user).search(params[:q])
+      else
+                # フロントエンドでツリー構造を構築するため、全ページを返す
+                current_user.pages.order(:position, :created_at)
+      end
       render json: Pages::SummarySerializer.new(pages).to_h
     end
 

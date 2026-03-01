@@ -1,0 +1,9 @@
+# Generated from app/services/page_search_service.rb with RBS::Inline
+
+class PageSearchService
+  # : (User user) -> void
+  def initialize: (User user) -> void
+
+  # : (String query) -> ActiveRecord::Relation
+  def search: (String query) -> ActiveRecord::Relation
+end

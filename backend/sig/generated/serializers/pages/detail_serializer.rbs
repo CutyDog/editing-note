@@ -1,0 +1,8 @@
+# Generated from app/serializers/pages/detail_serializer.rb with RBS::Inline
+
+module Pages
+  # ページ詳細表示用（content・children を含む）
+  class DetailSerializer < ::BaseSerializer
+    def children: (untyped page) -> untyped
+  end
+end

@@ -1,0 +1,21 @@
+# rbs_collection.yaml
+sources:
+  - type: git
+    name: ruby/gem_rbs_collection
+    remote: https://github.com/ruby/gem_rbs_collection.git
+    revision: main
+    repo_dir: gems
+
+path: .gem_rbs_collection
+
+gems:
+  - name: activesupport
+  - name: activerecord
+  - name: actionpack
+  - name: actionview
+  - name: railties
+  - name: rspec-rails
+  - name: rspec-core
+  - name: cgi
+  - name: listen
+  - name: logger

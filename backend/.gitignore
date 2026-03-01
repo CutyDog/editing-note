@@ -12,3 +12,6 @@ config/credentials/*.key
 
 # Environment variables
 .env*
+
+# RBS
+.gem_rbs_collection

@@ -6,9 +6,8 @@ module Api
 
     # GET /api/pages
     def index
-      pages = current_user.pages
-                          .where(parent_id: nil)
-                          .order(:position, :created_at)
+      # フロントエンドでツリー構造を構築するため、全ページを返す
+      pages = current_user.pages.order(:position, :created_at)
       render json: Pages::SummarySerializer.new(pages).to_h
     end
 

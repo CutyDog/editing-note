@@ -1,7 +1,8 @@
 import React from 'react';
 import { usePages, useCreatePage, useDeletePage } from '../hooks';
-import { Plus, FileText, Loader2, Trash2, Library } from 'lucide-react';
+import { Plus, Loader2, Library } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { PageTreeItem } from './PageTreeItem';
 
 export const PageSidebar: React.FC = () => {
   const { data: pages, isLoading } = usePages();
@@ -17,6 +18,17 @@ export const PageSidebar: React.FC = () => {
       }
     });
   };
+
+  const handleCreateChildPage = (e: React.MouseEvent, parentId: number) => {
+    e.stopPropagation();
+    createPage({ title: 'Untitled', parent_id: parentId }, {
+      onSuccess: (newPage) => {
+        navigate(`/pages/${newPage.id}`);
+      }
+    });
+  };
+
+  const rootPages = pages?.filter(p => !p.parent_id).sort((a, b) => a.position - b.position) || [];
 
   const handleDeletePage = (e: React.MouseEvent, id: number) => {
     e.stopPropagation();
@@ -57,7 +69,7 @@ export const PageSidebar: React.FC = () => {
         <button
           onClick={handleCreatePage}
           disabled={isCreating}
-          style={{ padding: '4px', borderRadius: '4px', background: 'transparent', boxShadow: 'none' }}
+          style={{ padding: '4px', borderRadius: '4px', background: 'transparent', boxShadow: 'none', outline: 'none' }}
         >
           {isCreating ? <Loader2 size={16} className="animate-spin" /> : <Plus size={16} />}
         </button>
@@ -70,57 +82,17 @@ export const PageSidebar: React.FC = () => {
           </div>
         ) : (
           <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-            {pages?.map((page) => (
-              <li key={page.id} className="group">
-                <div style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  paddingRight: '8px',
-                  background: activeId === String(page.id) ? 'var(--bg-card-hover)' : 'transparent',
-                }}>
-                  <button
-                    onClick={() => navigate(`/pages/${page.id}`)}
-                    style={{
-                      flex: 1,
-                      padding: '8px 12px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '8px',
-                      background: 'transparent',
-                      border: 'none',
-                      borderRadius: 0,
-                      boxShadow: 'none',
-                      textAlign: 'left',
-                      overflow: 'hidden'
-                    }}
-                  >
-                    <FileText size={16} color={activeId === String(page.id) ? 'var(--accent-primary)' : 'var(--text-secondary)'} />
-                    <span style={{
-                      fontSize: '0.95rem',
-                      color: activeId === String(page.id) ? 'var(--text-primary)' : 'var(--text-secondary)',
-                      whiteSpace: 'nowrap',
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis'
-                    }}>
-                      {page.title || 'Untitled'}
-                    </span>
-                  </button>
-                  <button
-                    onClick={(e) => handleDeletePage(e, page.id)}
-                    className="sidebar-delete-btn"
-                    style={{
-                      padding: '4px',
-                      borderRadius: '4px',
-                      background: 'transparent',
-                      boxShadow: 'none',
-                      opacity: 0,
-                      transition: 'opacity 0.2s',
-                    }}
-                  >
-                    <Trash2 size={14} color="var(--text-secondary)" />
-                  </button>
-                </div>
-              </li>
+            {rootPages.map((page) => (
+              <PageTreeItem
+                key={page.id}
+                page={page}
+                allPages={pages || []}
+                level={0}
+                activeId={activeId}
+                onNavigate={(id) => navigate(`/pages/${id}`)}
+                onDelete={handleDeletePage}
+                onCreateChild={handleCreateChildPage}
+              />
             ))}
           </ul>
         )}

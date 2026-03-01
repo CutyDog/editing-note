@@ -5,6 +5,6 @@ module Pages
   class SummarySerializer
     include Alba::Resource
 
-    attributes :id, :title, :position, :created_at, :updated_at
+    attributes :id, :title, :position, :parent_id, :created_at, :updated_at
   end
 end

@@ -20,6 +20,7 @@ class User < ApplicationRecord
   has_one :profile, dependent: :destroy
   has_many :refresh_tokens, dependent: :destroy
   has_many :pages, dependent: :destroy
+  has_many :favorite_pages, dependent: :destroy
 
   validates :email, presence: true,
                     uniqueness: true,

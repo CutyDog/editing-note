@@ -166,16 +166,18 @@ button:focus-visible {
 }
 
 /* Sidebar Specific Styles */
-.group:hover .sidebar-delete-btn {
+/* 直接の .group のみ対象にし、入れ子の .group には波及させない */
+.group:hover>div>.sidebar-delete-btn {
   opacity: 1 !important;
 }
 
-.sidebar-delete-btn:hover {
+/* ゴミ箱ボタン専用: ホバー時のみ赤くする */
+.sidebar-action-group .delete-icon-btn:hover {
   background-color: rgba(248, 81, 73, 0.15) !important;
-  color: #f85149 !important;
+  border-radius: 4px;
 }
 
-.sidebar-delete-btn:hover svg {
+.sidebar-action-group .delete-icon-btn:hover svg {
   stroke: #f85149 !important;
 }
 

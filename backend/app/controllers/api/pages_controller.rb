@@ -7,12 +7,15 @@ module Api
     # GET /api/pages
     def index
       pages = if params[:q].present?
-                ::PageSearchService.new(current_user).search(params[:q])
-      else
-                # フロントエンドでツリー構造を構築するため、全ページを返す
-                current_user.pages.order(:position, :created_at)
-      end
-      render json: Pages::SummarySerializer.new(pages).to_h
+                 ::PageSearchService.new(current_user).search(params[:q])
+               else
+                 # フロントエンドでツリー構造を構築するため、全ページを返す
+                 current_user.pages.order(:position, :created_at)
+               end
+
+      # is_favorited を N+1 なしで算出するため favorite_pages を preload
+      pages = pages.preload(:favorite_pages)
+      render json: Pages::SummarySerializer.new(pages, params: { current_user: }).to_h
     end
 
     # GET /api/pages/:id

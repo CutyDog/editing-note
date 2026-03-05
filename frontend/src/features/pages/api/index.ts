@@ -5,3 +5,4 @@ export * from './updatePage';
 export * from './deletePage';
 export * from './searchPages';
 export * from './favoritePages';
+export * from './getRecentPages';

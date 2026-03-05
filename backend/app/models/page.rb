@@ -29,6 +29,7 @@ class Page < ApplicationRecord
   belongs_to :parent, class_name: "Page", optional: true
   has_many :children, class_name: "Page", foreign_key: :parent_id, dependent: :destroy
   has_many :favorite_pages, dependent: :destroy
+  has_many :page_views, dependent: :destroy
 
   validates :user_id, presence: true
   validates :title, length: { maximum: 255 }

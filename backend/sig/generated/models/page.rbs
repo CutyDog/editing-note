@@ -24,6 +24,7 @@
 #  fk_rails_...  (user_id => users.id)
 class Page < ApplicationRecord
   # userのお気に入りに登録されているかどうかを返す。
-  # : (User user) -> bool
-  def favorited_by?: (User user) -> bool
+  # : @param user [User]
+  # : @return [Boolean]
+  def favorited_by?: (untyped user) -> untyped
 end

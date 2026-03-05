@@ -12,6 +12,9 @@ Rails.application.routes.draw do
 
     resource :me, only: %i[show update], controller: "me"
     resources :pages, only: %i[index show create update destroy] do
+      collection do
+        get :recent
+      end
       resource :favorite, only: %i[create destroy], controller: "favorite_pages"
     end
   end

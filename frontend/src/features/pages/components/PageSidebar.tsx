@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
-import { usePages, useCreatePage, useDeletePage, useSearchPages, useFavoritePage, useUnfavoritePage } from '../hooks';
-import { Plus, Loader2, Library, User as UserIcon, Search, Star } from 'lucide-react';
+import { usePages, useCreatePage, useDeletePage, useSearchPages, useFavoritePage, useUnfavoritePage, useRecentPages } from '../hooks';
+import { Plus, Loader2, Library, User as UserIcon, Search, Star, Clock } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
 import { PageTreeItem } from './PageTreeItem';
+import { PageSidebarSection } from './PageSidebarSection';
 import { useMe, ProfileModal } from '../../auth';
 
 export const PageSidebar: React.FC<{ width?: number }> = ({ width = 280 }) => {
+  const queryClient = useQueryClient();
   const { data: pages, isLoading } = usePages();
   const { mutate: createPage, isPending: isCreating } = useCreatePage();
   const { mutate: deletePage } = useDeletePage();
@@ -17,6 +20,13 @@ export const PageSidebar: React.FC<{ width?: number }> = ({ width = 280 }) => {
   const { data: searchResults, isLoading: isSearching } = useSearchPages(searchQuery);
   const { mutate: favoritePage } = useFavoritePage();
   const { mutate: unfavoritePage } = useUnfavoritePage();
+  const { data: recentPages } = useRecentPages();
+
+  React.useEffect(() => {
+    if (activeId) {
+      queryClient.invalidateQueries({ queryKey: ['recent_pages'] });
+    }
+  }, [activeId, queryClient]);
 
   const handleFavorite = (e: React.MouseEvent, page: import('../types').PageSummary) => {
     e.stopPropagation();
@@ -191,32 +201,32 @@ export const PageSidebar: React.FC<{ width?: number }> = ({ width = 280 }) => {
         ) : (
           <>
             {/* Favorites セクション */}
-            {favoritePages.length > 0 && (
-              <div style={{ marginBottom: '0.5rem' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0 1rem 0.5rem' }}>
-                  <Star size={14} color="var(--accent-primary)" fill="var(--accent-primary)" />
-                  <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600 }}>
-                    Favorites
-                  </span>
-                </div>
-                <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-                  {favoritePages.map((page) => (
-                    <PageTreeItem
-                      key={`fav-${page.id}`}
-                      page={page}
-                      allPages={pages || []}
-                      level={0}
-                      activeId={activeId}
-                      onNavigate={(id) => navigate(`/pages/${id}`)}
-                      onDelete={handleDeletePage}
-                      onCreateChild={handleCreateChildPage}
-                      onFavorite={handleFavorite}
-                    />
-                  ))}
-                </ul>
-                <div style={{ borderBottom: '1px solid var(--border-color)', margin: '0.5rem 1rem' }} />
-              </div>
-            )}
+            <PageSidebarSection
+              title="Favorites"
+              icon={<Star size={14} color="var(--accent-primary)" fill="var(--accent-primary)" />}
+              pages={favoritePages}
+              allPages={pages || []}
+              activeId={activeId}
+              itemKeyPrefix="fav"
+              onNavigate={(id) => navigate(`/pages/${id}`)}
+              onDelete={handleDeletePage}
+              onCreateChild={handleCreateChildPage}
+              onFavorite={handleFavorite}
+            />
+
+            {/* Recent セクション */}
+            <PageSidebarSection
+              title="Recent"
+              icon={<Clock size={14} color="var(--text-secondary)" />}
+              pages={recentPages || []}
+              allPages={pages || []}
+              activeId={activeId}
+              itemKeyPrefix="recent"
+              onNavigate={(id) => navigate(`/pages/${id}`)}
+              onDelete={handleDeletePage}
+              onCreateChild={handleCreateChildPage}
+              onFavorite={handleFavorite}
+            />
 
             {/* 全ページツリー */}
             <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>

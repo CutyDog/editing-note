@@ -10,6 +10,17 @@ create_table "favorite_pages", force: :cascade do |t|
   t.index ["user_id"], name: "index_favorite_pages_on_user_id"
 end
 
+create_table "page_views", force: :cascade do |t|
+  t.datetime "created_at", null: false
+  t.datetime "last_viewed_at", null: false
+  t.bigint "page_id", null: false
+  t.datetime "updated_at", null: false
+  t.bigint "user_id", null: false
+  t.index ["page_id"], name: "index_page_views_on_page_id"
+  t.index ["user_id", "page_id"], name: "index_page_views_on_user_id_and_page_id", unique: true
+  t.index ["user_id"], name: "index_page_views_on_user_id"
+end
+
 create_table "pages", force: :cascade do |t|
   t.jsonb "content", default: []
   t.datetime "created_at", null: false
@@ -52,6 +63,8 @@ end
 
 add_foreign_key "favorite_pages", "pages"
 add_foreign_key "favorite_pages", "users"
+add_foreign_key "page_views", "pages"
+add_foreign_key "page_views", "users"
 add_foreign_key "pages", "pages", column: "parent_id"
 add_foreign_key "pages", "users"
 add_foreign_key "profiles", "users"

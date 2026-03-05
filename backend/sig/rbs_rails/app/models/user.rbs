@@ -261,6 +261,10 @@ class ::User < ::ApplicationRecord
   def favorite_pages=: (::FavoritePage::ActiveRecord_Associations_CollectionProxy | ::Array[::FavoritePage]) -> (::FavoritePage::ActiveRecord_Associations_CollectionProxy | ::Array[::FavoritePage])
   def favorite_page_ids: () -> ::Array[::Integer]
   def favorite_page_ids=: (::Array[::Integer]) -> ::Array[::Integer]
+  def page_views: () -> ::PageView::ActiveRecord_Associations_CollectionProxy
+  def page_views=: (::PageView::ActiveRecord_Associations_CollectionProxy | ::Array[::PageView]) -> (::PageView::ActiveRecord_Associations_CollectionProxy | ::Array[::PageView])
+  def page_view_ids: () -> ::Array[::Integer]
+  def page_view_ids=: (::Array[::Integer]) -> ::Array[::Integer]
 
   def profile: () -> ::Profile?
   def profile=: (::Profile?) -> ::Profile?
@@ -328,6 +332,10 @@ end
 class ::FavoritePage < ::ApplicationRecord
 end
 class ::FavoritePage::ActiveRecord_Associations_CollectionProxy < ::ActiveRecord::Associations::CollectionProxy
+end
+class ::PageView < ::ApplicationRecord
+end
+class ::PageView::ActiveRecord_Associations_CollectionProxy < ::ActiveRecord::Associations::CollectionProxy
 end
 class ::Profile < ::ApplicationRecord
 end

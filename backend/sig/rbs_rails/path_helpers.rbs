@@ -11,6 +11,7 @@ interface ::_RbsRailsPathHelpers
   def api_auth_refresh_path: (*untyped) -> ::String
   def api_auth_logout_path: (*untyped) -> ::String
   def api_me_path: (*untyped) -> ::String
+  def api_page_favorite_path: (*untyped) -> ::String
   def api_pages_path: (*untyped) -> ::String
   def api_page_path: (*untyped) -> ::String
   def rails_postmark_inbound_emails_path: (*untyped) -> ::String
@@ -47,6 +48,7 @@ interface ::_RbsRailsPathHelpers
   def api_auth_refresh_url: (*untyped) -> ::String
   def api_auth_logout_url: (*untyped) -> ::String
   def api_me_url: (*untyped) -> ::String
+  def api_page_favorite_url: (*untyped) -> ::String
   def api_pages_url: (*untyped) -> ::String
   def api_page_url: (*untyped) -> ::String
   def rails_postmark_inbound_emails_url: (*untyped) -> ::String

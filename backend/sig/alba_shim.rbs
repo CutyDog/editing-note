@@ -3,10 +3,13 @@ module Alba
     module ClassMethods
       def attributes: (*Symbol) -> void
       def one: (Symbol, ?resource: untyped, ?key: Symbol) -> void
-      def many: (Symbol, ?serializer: untyped) { () -> void } -> void
-      def new: (untyped) -> untyped
+      def many: (Symbol, ?serializer: untyped) ?{ (untyped) -> void } -> void
+      def attribute: (Symbol) ?{ (untyped) -> untyped } -> void
+      def params: () -> Hash[Symbol, untyped]
+      def new: (untyped, ?params: Hash[Symbol, untyped]) -> untyped
     end
 
-    def to_h: () -> Hash[Symbol, untyped]
+    def params: () -> Hash[Symbol, untyped]
+    def to_h: () -> Hash[String, untyped]
   end
 end

@@ -373,6 +373,10 @@ class ::Page < ::ApplicationRecord
   def children=: (::Page::ActiveRecord_Associations_CollectionProxy | ::Array[::Page]) -> (::Page::ActiveRecord_Associations_CollectionProxy | ::Array[::Page])
   def child_ids: () -> ::Array[::Integer]
   def child_ids=: (::Array[::Integer]) -> ::Array[::Integer]
+  def favorite_pages: () -> ::FavoritePage::ActiveRecord_Associations_CollectionProxy
+  def favorite_pages=: (::FavoritePage::ActiveRecord_Associations_CollectionProxy | ::Array[::FavoritePage]) -> (::FavoritePage::ActiveRecord_Associations_CollectionProxy | ::Array[::FavoritePage])
+  def favorite_page_ids: () -> ::Array[::Integer]
+  def favorite_page_ids=: (::Array[::Integer]) -> ::Array[::Integer]
 
   def user: () -> ::User
   def user=: (::User?) -> ::User?
@@ -425,6 +429,10 @@ end
 class ::Page < ::ApplicationRecord
 end
 class ::Page::ActiveRecord_Associations_CollectionProxy < ::ActiveRecord::Associations::CollectionProxy
+end
+class ::FavoritePage < ::ApplicationRecord
+end
+class ::FavoritePage::ActiveRecord_Associations_CollectionProxy < ::ActiveRecord::Associations::CollectionProxy
 end
 class ::User < ::ApplicationRecord
 end

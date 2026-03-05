@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+# rbs_inline: enabled
+
 # == Schema Information
 #
 # Table name: pages
@@ -31,8 +34,8 @@ class Page < ApplicationRecord
   validates :title, length: { maximum: 255 }
 
   # userのお気に入りに登録されているかどうかを返す。
-  # @param user [User]
-  # @return [Boolean]
+  #: @param user [User]
+  #: @return [Boolean]
   def favorited_by?(user)
     favorite_pages.any? { |fp| fp.user_id == user.id }
   end

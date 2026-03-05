@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+# rbs_inline: enabled
 
 module Api
   class PagesController < ApplicationController
@@ -6,15 +7,8 @@ module Api
 
     # GET /api/pages
     def index
-      pages = if params[:q].present?
-                 ::PageSearchService.new(current_user).search(params[:q])
-               else
-                 # フロントエンドでツリー構造を構築するため、全ページを返す
-                 current_user.pages.order(:position, :created_at)
-               end
-
-      # is_favorited を N+1 なしで算出するため favorite_pages を preload
-      pages = pages.preload(:favorite_pages)
+      pages = fetch_pages
+      pages = pages.preload(:favorite_pages).limit(100)
       render json: Pages::SummarySerializer.new(pages, params: { current_user: }).to_h
     end
 
@@ -49,6 +43,16 @@ module Api
     end
 
     private
+
+    # @return [ActiveRecord::Relation]
+    def fetch_pages
+      if params[:q].present?
+        ::PageSearchService.new(current_user).search(params[:q])
+      else
+        # フロントエンドでツリー構造を構築するため、全ページを返す
+        current_user.pages.order(:position, :created_at)
+      end
+    end
 
     def set_page
       @page = current_user.pages.find(params[:id])

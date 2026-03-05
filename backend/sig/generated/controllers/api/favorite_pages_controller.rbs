@@ -1,0 +1,15 @@
+# Generated from app/controllers/api/favorite_pages_controller.rb with RBS::Inline
+
+module Api
+  class FavoritePagesController < ApplicationController
+    # POST /api/pages/:page_id/favorite
+    def create: () -> untyped
+
+    # DELETE /api/pages/:page_id/favorite
+    def destroy: () -> untyped
+
+    private
+
+    def set_page: () -> untyped
+  end
+end

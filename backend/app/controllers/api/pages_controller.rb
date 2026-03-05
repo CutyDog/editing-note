@@ -12,8 +12,20 @@ module Api
       render json: Pages::SummarySerializer.new(pages, params: { current_user: }).to_h
     end
 
+    # GET /api/pages/recent
+    def recent
+      pages = current_user.pages
+                          .joins(:page_views)
+                          .order("page_views.last_viewed_at DESC")
+                          .limit(10)
+                          .preload(:favorite_pages)
+
+      render json: Pages::SummarySerializer.new(pages, params: { current_user: }).to_h
+    end
+
     # GET /api/pages/:id
     def show
+      record_view(@page)
       render json: Pages::DetailSerializer.new(@page).to_h
     end
 
@@ -58,6 +70,15 @@ module Api
       @page = current_user.pages.find(params[:id])
     rescue ActiveRecord::RecordNotFound
       render json: { error: "ページが見つかりません" }, status: :not_found
+    end
+
+    def record_view(page)
+      view = current_user.page_views.find_or_initialize_by(page: page)
+      view.last_viewed_at = Time.current
+      view.save!
+    rescue StandardError => e
+      # 閲覧ログの記録失敗はメインの処理を止めない
+      Rails.logger.error "最近見たページの記録に失敗しました: #{e.message}"
     end
 
     def page_params

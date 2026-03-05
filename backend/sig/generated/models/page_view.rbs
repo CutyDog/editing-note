@@ -1,0 +1,4 @@
+# Generated from app/models/page_view.rb with RBS::Inline
+
+class PageView < ApplicationRecord
+end

@@ -19,6 +19,10 @@ module Api
 
     private
 
+    # @return [ActiveRecord::Relation]
+    # : () -> untyped
+    def fetch_pages: () -> untyped
+
     def set_page: () -> untyped
 
     def page_params: () -> untyped

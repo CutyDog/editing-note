@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Plus, FileText, Trash2, ChevronRight, ChevronDown } from 'lucide-react';
+import { FileText, ChevronRight, ChevronDown } from 'lucide-react';
 import type { PageSummary } from '../types';
+import { PageActionButtons } from './PageActionButtons';
 
 export interface PageTreeItemProps {
   page: PageSummary;
@@ -10,21 +11,35 @@ export interface PageTreeItemProps {
   onNavigate: (id: number) => void;
   onDelete: (e: React.MouseEvent, id: number) => void;
   onCreateChild: (e: React.MouseEvent, parentId: number) => void;
+  onFavorite: (e: React.MouseEvent, page: PageSummary) => void;
 }
 
-export const PageTreeItem: React.FC<PageTreeItemProps> = ({ page, allPages, level, activeId, onNavigate, onDelete, onCreateChild }) => {
+export const PageTreeItem: React.FC<PageTreeItemProps> = ({
+  page,
+  allPages,
+  level,
+  activeId,
+  onNavigate,
+  onDelete,
+  onCreateChild,
+  onFavorite,
+}) => {
   const [isExpanded, setIsExpanded] = useState(true);
+  const [isHovered, setIsHovered] = useState(false);
   const children = allPages.filter(p => p.parent_id === page.id).sort((a, b) => a.position - b.position);
   const hasChildren = children.length > 0;
 
   return (
-    <li className="group">
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        paddingRight: '8px',
-        background: activeId === String(page.id) ? 'var(--bg-card-hover)' : 'transparent',
-      }}>
+    <li>
+      <div
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          paddingRight: '8px',
+          background: activeId === String(page.id) ? 'var(--bg-card-hover)' : 'transparent',
+        }}>
         <div style={{ width: `${level * 16 + 24}px`, display: 'flex', justifyContent: 'flex-end', paddingRight: '4px' }}>
           {hasChildren ? (
             <button
@@ -66,30 +81,14 @@ export const PageTreeItem: React.FC<PageTreeItemProps> = ({ page, allPages, leve
             {page.title || 'Untitled'}
           </span>
         </button>
-        <div
-          className="sidebar-delete-btn"
-          style={{
-            display: 'flex',
-            gap: '2px',
-            opacity: 0,
-            transition: 'opacity 0.2s',
-          }}
-        >
-          <button
-            onClick={(e) => onCreateChild(e, page.id)}
-            style={{ padding: '4px', borderRadius: '4px', background: 'transparent', border: 'none', outline: 'none', boxShadow: 'none' }}
-            title="Add child page"
-          >
-            <Plus size={14} color="var(--text-secondary)" />
-          </button>
-          <button
-            onClick={(e) => onDelete(e, page.id)}
-            style={{ padding: '4px', borderRadius: '4px', background: 'transparent', border: 'none', outline: 'none', boxShadow: 'none' }}
-            title="Delete page"
-          >
-            <Trash2 size={14} color="var(--text-secondary)" />
-          </button>
-        </div>
+
+        <PageActionButtons
+          page={page}
+          onFavorite={onFavorite}
+          onCreateChild={onCreateChild}
+          onDelete={onDelete}
+          isVisible={isHovered || page.is_favorited}
+        />
       </div>
 
       {isExpanded && hasChildren && (
@@ -104,6 +103,7 @@ export const PageTreeItem: React.FC<PageTreeItemProps> = ({ page, allPages, leve
               onNavigate={onNavigate}
               onDelete={onDelete}
               onCreateChild={onCreateChild}
+              onFavorite={onFavorite}
             />
           ))}
         </ul>

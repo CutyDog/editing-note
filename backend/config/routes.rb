@@ -11,7 +11,9 @@ Rails.application.routes.draw do
     delete "auth/logout", to: "auth#logout"
 
     resource :me, only: %i[show update], controller: "me"
-    resources :pages, only: %i[index show create update destroy]
+    resources :pages, only: %i[index show create update destroy] do
+      resource :favorite, only: %i[create destroy], controller: "favorite_pages"
+    end
   end
 
   # Defines the root path route ("/")

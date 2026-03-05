@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+# rbs_inline: enabled
+
 # == Schema Information
 #
 # Table name: pages
@@ -25,7 +28,15 @@ class Page < ApplicationRecord
   belongs_to :user
   belongs_to :parent, class_name: "Page", optional: true
   has_many :children, class_name: "Page", foreign_key: :parent_id, dependent: :destroy
+  has_many :favorite_pages, dependent: :destroy
 
   validates :user_id, presence: true
   validates :title, length: { maximum: 255 }
+
+  # userのお気に入りに登録されているかどうかを返す。
+  #: @param user [User]
+  #: @return [Boolean]
+  def favorited_by?(user)
+    favorite_pages.any? { |fp| fp.user_id == user.id }
+  end
 end

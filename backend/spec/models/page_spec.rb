@@ -61,4 +61,43 @@ RSpec.describe Page, type: :model do
       expect { parent_page.destroy }.to change(Page, :count).by(-2)
     end
   end
+
+  describe '#favorited_by?' do
+    let(:user) { create(:user) }
+    let(:other_user) { create(:user) }
+    let(:page) { create(:page, user: user) }
+
+    context '対象ユーザーがお気に入り登録している場合' do
+      before { create(:favorite_page, user: user, page: page) }
+
+      it 'trueを返すこと' do
+        page.reload
+        expect(page.favorited_by?(user)).to be true
+      end
+    end
+
+    context '対象ユーザーがお気に入り登録していない場合' do
+      it 'falseを返すこと' do
+        expect(page.favorited_by?(user)).to be false
+      end
+    end
+
+    context '別のユーザーがお気に入り登録しているが、対象ユーザーは登録していない場合' do
+      before { create(:favorite_page, user: other_user, page: page) }
+
+      it 'falseを返すこと' do
+        page.reload
+        expect(page.favorited_by?(user)).to be false
+      end
+    end
+
+    context 'favorite_pagesがpreloadされている場合' do
+      before { create(:favorite_page, user: user, page: page) }
+
+      it 'preloadキャッシュを使って正しくtrueを返すこと' do
+        preloaded_page = Page.preload(:favorite_pages).find(page.id)
+        expect(preloaded_page.favorited_by?(user)).to be true
+      end
+    end
+  end
 end

@@ -5,7 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { PageTreeItem } from './PageTreeItem';
 import { useMe, ProfileModal } from '../../auth';
 
-export const PageSidebar: React.FC = () => {
+export const PageSidebar: React.FC<{ width?: number }> = ({ width = 280 }) => {
   const { data: pages, isLoading } = usePages();
   const { mutate: createPage, isPending: isCreating } = useCreatePage();
   const { mutate: deletePage } = useDeletePage();
@@ -50,7 +50,8 @@ export const PageSidebar: React.FC = () => {
 
   return (
     <div className="page-sidebar" style={{
-      width: '280px',
+      width: `${width}px`,
+      minWidth: `${width}px`,
       height: '100vh',
       backgroundColor: 'var(--bg-card)',
       borderRight: '1px solid var(--border-color)',
@@ -107,7 +108,7 @@ export const PageSidebar: React.FC = () => {
         </button>
       </div>
 
-      <div style={{ padding: '0 1rem 1rem' }}>
+      <div style={{ padding: '0 1rem 1rem', overflow: 'hidden' }}>
         <div style={{ position: 'relative' }}>
           <Search size={14} color="var(--text-secondary)" style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)' }} />
           <input
@@ -117,6 +118,7 @@ export const PageSidebar: React.FC = () => {
             onChange={(e) => setSearchQuery(e.target.value)}
             style={{
               width: '100%',
+              boxSizing: 'border-box',
               padding: '6px 12px 6px 32px',
               borderRadius: '6px',
               border: '1px solid var(--border-color)',
